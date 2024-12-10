@@ -1,74 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<style>
-		body {
-			font-family: monospace;
-			margin: 0;
-			text-align: center;
-			overflow: hidden;
-		}
-		
-		h1 {
-			font-size: 16px;
-			font-style: italic;
-			font-weight: bold;
-			text-decoration: underline;	
-		}
-		
-		h2 {
-			font-size: 14px;
-			font-style: italic;
-			font-weight: normal;
-		}
-		
-		p {
-			font-size: 14px;
-			font-weight: normal;
-		}
-		
-		section {
-			text-align: center;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			margin-right: -50%;
-			transform: translate(-50%, -50%); 
-		}
-		
-		footer {
-			text-align: center;
-			position: fixed;
-			top: 95%;
-			margin-right: 3rem;
-			transform: translate(-50%, -50%); 
-		}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	body {
+		font-family: monospace;
+		margin: 0;
+		text-align: center;
+		overflow: hidden;
+	}
 
-		canvas {
-			background-color: #bababa;
-		}
-				
-		a {
-			color: black;
-		}
-	</style>
+	h1 {
+		font-size: 16px;
+		font-style: italic;
+		font-weight: bold;
+		text-decoration: underline;
+	}
 
-	<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=47rbYXp8Mq">
-	<link rel="icon" type="image/png" href="assets/favicon-32x32.png?v=47rbYXp8Mq" sizes="32x32">
-	<link rel="icon" type="image/png" href="assets/android-chrome-192x192.png?v=47rbYXp8Mq" sizes="192x192">
-	<link rel="icon" type="image/png" href="assets/favicon-16x16.png?v=47rbYXp8Mq" sizes="16x16">
-	<!-- <link rel="manifest" href="assets/manifest.json?v=47rbYXp8Mq"> -->
-	<link rel="mask-icon" href="assets/safari-pinned-tab.svg?v=47rbYXp8Mq">
-	<link rel="shortcut icon" href="assets/favicon.ico?v=47rbYXp8Mq">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="assets/mstile-144x144.png?v=47rbYXp8Mq">
-	<meta name="theme-color" content="#ffffff">
+	h2 {
+		font-size: 14px;
+		font-style: italic;
+		font-weight: normal;
+	}
 
-	<title>vuk savić</title>
+	p {
+		font-size: 14px;
+		font-weight: normal;
+	}
 
-	<body>
-		<script type="importmap">
+	section {
+		text-align: center;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		margin-right: -50%;
+		transform: translate(-50%, -50%);
+	}
+
+	footer {
+		text-align: center;
+		position: fixed;
+		top: 95%;
+		margin-right: 3rem;
+		transform: translate(-50%, -50%);
+	}
+
+	canvas {
+		background-color: #bababa;
+	}
+
+	a {
+		color: black;
+	}
+</style>
+
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=47rbYXp8Mq">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png?v=47rbYXp8Mq" sizes="32x32">
+<link rel="icon" type="image/png" href="assets/android-chrome-192x192.png?v=47rbYXp8Mq" sizes="192x192">
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png?v=47rbYXp8Mq" sizes="16x16">
+<link rel="manifest" href="assets/manifest.json?v=47rbYXp8Mq">
+<link rel="mask-icon" href="assets/safari-pinned-tab.svg?v=47rbYXp8Mq">
+<link rel="shortcut icon" href="assets/favicon.ico?v=47rbYXp8Mq">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="assets/mstile-144x144.png?v=47rbYXp8Mq">
+<meta name="theme-color" content="#ffffff">
+
+<title>vuk savić</title>
+
+<body>
+	<script type="importmap">
 			{
 		  	"imports": {
 				"three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
@@ -77,59 +77,65 @@
 			}
 		</script>
 
-		<script type="module" >
-			
-				import * as THREE from 'three';
+	<script type="module">
 
-				const scene = new THREE.Scene();
-				const camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		import * as THREE from 'three';
 
-				const renderer = new THREE.WebGLRenderer( { alpha: true } );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.setAnimationLoop( animate );
-				document.body.appendChild( renderer.domElement );
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-				const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-				const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-				const cube = new THREE.Mesh( geometry, material );
+		const renderer = new THREE.WebGLRenderer({ alpha: true });
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setAnimationLoop(animate);
+		document.body.appendChild(renderer.domElement);
 
-				scene.add( cube );
+		const geometry = new THREE.BoxGeometry(1, 1, 1);
+		const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+		const cube = new THREE.Mesh(geometry, material);
 
-				camera.position.z = 5;
+		scene.add(cube);
 
-				window.onresize = function () {
+		camera.position.z = 5;
 
-					camera.aspect = window.innerWidth / window.innerHeight;
-					camera.updateProjectionMatrix();
+		window.onresize = function () {
 
-					renderer.setSize( window.innerWidth, window.innerHeight );
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
 
-				}
+			renderer.setSize(window.innerWidth, window.innerHeight);
 
-				function animate() {
+		}
 
-					cube.rotation.x += 0.005;
-					cube.rotation.y += 0.005;
+		function animate() {
 
-					renderer.render( scene, camera );
+			cube.rotation.x += 0.005;
+			cube.rotation.y += 0.005;
 
-				}
-			
-		</script>
-		
+			renderer.render(scene, camera);
+
+		}
+
+	</script>
+
 	<section>
 		<h1>vuk savić's personal website</h1>
-		<p><a href="https://github.com/vuksavic/" target="_blank">programming</a> | <a href="https://linkedin.com/in/savicvuk" target="_blank">linkedin</a> | <a rel="me" href="https://balkan.fedive.rs/@vuk">fediverse</a></p>
-		<p><a href="https://instagram.com/vucejebote/" target="_blank">instagram</a> | <a href="https://open.spotify.com/user/ham2ackis5u93u5gzuqq8cj3q?si=Q_pETEmISDSN4mo90h5fTg/" target="_blank">spotify</a> | <a href="https://letterboxd.com/vuksavic/" target="_blank">letterboxd</a></p>
-		<p>[ ]</p>	
+		<p><a href="https://github.com/vuksavic/" target="_blank">programming</a> | <a
+				href="https://linkedin.com/in/savicvuk" target="_blank">linkedin</a> | <a rel="me"
+				href="https://balkan.fedive.rs/@vuk">fediverse</a></p>
+		<p><a href="https://instagram.com/vucejebote/" target="_blank">instagram</a> | <a
+				href="https://open.spotify.com/user/ham2ackis5u93u5gzuqq8cj3q?si=Q_pETEmISDSN4mo90h5fTg/"
+				target="_blank">spotify</a> | <a href="https://letterboxd.com/vuksavic/" target="_blank">letterboxd</a>
+		</p>
+		<p>[ ]</p>
 		<h2>contact:</h2>
 		<p><em><a href="mailto:vuk@posteo.net">vuk at posteo dot net</a></em></p>
 		<p><em>44°48'58.3"N 20°27'21.1"E</em></p>
 	</section>
-	
-	</body>
-	
-	<!-- <footer>
+
+</body>
+
+<!-- <footer>
     		<a href="https://rw.rs/">this site is hosted by rw.rs</a>
 	</footer> -->
+
 </html>
