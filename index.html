@@ -2,12 +2,30 @@
 <html lang="en">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<style>	
+	<style>
+	
+		canvas {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  z-index: -1;
+		}
+		
 		body {
+			position: relative;
 			font-family: monospace;
 			background: #f1f1f1;
 			overflow: hidden;
 			color: black;
+			text-align: center;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			margin-right: -50%;
+			transform: translate(-50%, -50%);
+			z-index: 1;
 		}
 		
 		h1 {
@@ -28,15 +46,6 @@
 			font-weight: normal;
 		}
 		
-		section {
-			text-align: center;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			margin-right: -50%;
-			transform: translate(-50%, -50%); 
-		}
-		
 		footer {
 			text-align: center;
 			position: fixed;
@@ -55,7 +64,7 @@
 	<link rel="icon" type="image/png" href="assets/favicon-32x32.png?v=47rbYXp8Mq" sizes="32x32">
 	<link rel="icon" type="image/png" href="assets/android-chrome-192x192.png?v=47rbYXp8Mq" sizes="192x192">
 	<link rel="icon" type="image/png" href="assets/favicon-16x16.png?v=47rbYXp8Mq" sizes="16x16">
-	<link rel="manifest" href="assets/manifest.json?v=47rbYXp8Mq">
+	<!-- <link rel="manifest" href="assets/manifest.json?v=47rbYXp8Mq"> -->
 	<link rel="mask-icon" href="assets/safari-pinned-tab.svg?v=47rbYXp8Mq">
 	<link rel="shortcut icon" href="assets/favicon.ico?v=47rbYXp8Mq">
 	<meta name="msapplication-TileColor" content="#ffffff">
@@ -64,55 +73,59 @@
 
 	<title>vuk savić</title>
 
-	<section>
-	<h1>vuk savić's personal website</h1>
-		<!-- <h2>now hosted at super dimension fortress dot org!</h2> -->
+	<body>
+		<h1>vuk savić's personal website</h1>
 		<p><a href="https://github.com/vuksavic/" target="_blank">programming</a> | <a href="https://linkedin.com/in/savicvuk" target="_blank">linkedin</a> | <a rel="me" href="https://balkan.fedive.rs/@vuk">fediverse</a></p>
 		<p><a href="https://instagram.com/vucejebote/" target="_blank">instagram</a> | <a href="https://open.spotify.com/user/ham2ackis5u93u5gzuqq8cj3q?si=Q_pETEmISDSN4mo90h5fTg/" target="_blank">spotify</a> | <a href="https://letterboxd.com/vuksavic/" target="_blank">letterboxd</a></p>
 		<p>[ ]</p>	
 		<h2>contact:</h2>
 		<p><em><a href="mailto:vuk@posteo.net">vuk at posteo dot net</a></em></p>
-	  <p><em>44°48'58.3"N 20°27'21.1"E</em></p>
-		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r57/three.min.js"></script>
-		<!-- <script src="https://unpkg.com/three/build/three.module.js"></script> nauči js prokleti jednog dana da pravilno implementiraš ovo đubre -->
-			<script>
-				
-				var camera, scene, renderer;
-				var geometry, material, mesh;
-				
-				function init() {
-					renderer = new THREE.CanvasRenderer();
-					renderer.setSize( window.innerWidth, window.innerHeight );
-				
-					document.body.appendChild( renderer.domElement );
-				
-					camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, window.innerWidth / window.innerHeight, window.innerWidth / window.innerHeight );
-					camera.position.z = 3;
-				
-					scene = new THREE.Scene();
-				
-					geometry = new THREE.CubeGeometry( 1, 1, 1 );
-					material = new THREE.MeshBasicMaterial( { color: 0xbababa, wireframe: true, wireframeLinewidth: 1 } );
-					mesh = new THREE.Mesh( geometry, material );
-					
-					scene.add( mesh ); }
+		<p><em>44°48'58.3"N 20°27'21.1"E</em></p>
+	</body>
+
+	<canvas>
+		<script type="importmap">
+			{
+		  	"imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
+				"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
+			  	}
+			}
+		</script>
+
+		<script type="module" >
 			
+				import * as THREE from 'three';
+
+				const scene = new THREE.Scene();
+				const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, window.innerWidth / window.innerHeight, window.innerWidth / window.innerHeight );
+
+				const renderer = new THREE.WebGLRenderer({ alpha: true });
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setAnimationLoop( animate );
+				document.body.appendChild( renderer.domElement );
+
+				const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+				const material = new THREE.MeshBasicMaterial( { color: 0xbababa } );
+				const cube = new THREE.Mesh( geometry, material );
+
+				scene.add( cube );
+
+				camera.position.z = 5;
+
 				function animate() {
-					requestAnimationFrame( animate );
-				
-					mesh.rotation.x = Date.now() * 0.0005;
-					mesh.rotation.y = Date.now() * 0.0005;
-				
-					renderer.render( scene, camera ); }
+
+					cube.rotation.x += 0.01;
+					cube.rotation.y += 0.01;
+
+					renderer.render( scene, camera );
+
+				}	
 			
-				init();
-				animate();
-				
-			</script>	
-	</section>
+		</script>	
+	</canvas>
 	
-<!--	<footer>
-    		<a href="https://neocities.org"><span title="this site was hosted by Neocities"><img src="https://anlucas.neocities.org/neocities_button.gif"></span></a>
-	</footer> -->
+<!--<footer>
+    		<a href="https://rw.rs/">this site is hosted by rw.rs</a>
+	</footer>-->
 </html>
