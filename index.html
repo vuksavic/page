@@ -3,94 +3,94 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-    body {
-      font-family: monospace;
-      margin: 0;
-      color: #000;
-      background-color: #bbbbbb;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      transition: background-color 0.3s, color 0.3s;
-    }
+	body {
+		font-family: monospace;
+		margin: 0;
+		color: #000;
+		background-color: #bbbbbb;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		overflow: hidden;
+		transition: background-color 0.3s, color 0.3s;
+	}
 
-    body.dark {
-      color: #fff;
-      background-color: #222222;
-    }
+	body.dark {
+		color: #fff;
+		background-color: #222222;
+	}
 
-    a {
-      color: inherit;
-    }
+	a {
+		color: inherit;
+	}
 
-    h1 {
-      font-size: 16px;
-      font-style: italic;
-      font-weight: bold;
-      text-decoration: underline;
-      margin: 0.5em 0;
-    }
+	h1 {
+		font-size: 16px;
+		font-style: italic;
+		font-weight: bold;
+		text-decoration: underline;
+		margin: 0.5em 0;
+	}
 
-    h2 {
-      font-size: 14px;
-      font-weight: regular;
-      margin: 0.5em 0;
-    }
+	h2 {
+		font-size: 14px;
+		font-weight: regular;
+		margin: 0.5em 0;
+	}
 
-    p {
-      font-size: 14px;
-      margin: 0.5em 0;
-    }
+	p {
+		font-size: 14px;
+		margin: 0.5em 0;
+	}
 
-    .mode-toggle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 140px;
-      height: 10px;
-      cursor: pointer;
-      user-select: none;
-      position: relative;
-      font-size: 14px;
-    }
+	.mode-toggle {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 140px;
+		height: 10px;
+		cursor: pointer;
+		user-select: none;
+		position: relative;
+		font-size: 14px;
+	}
 
-    .mode-toggle span {
-      position: absolute;
-      transition: opacity 0.3s;
-    }
+	.mode-toggle span {
+		position: absolute;
+		transition: opacity 0.3s;
+	}
 
-    .mode-toggle span.default {
-      opacity: 1;
-    }
+	.mode-toggle span.default {
+		opacity: 1;
+	}
 
-    .mode-toggle:hover .default {
-      opacity: 0;
-    }
+	.mode-toggle:hover .default {
+		opacity: 0;
+	}
 
-    .mode-toggle span.hover {
-      opacity: 0;
-    }
+	.mode-toggle span.hover {
+		opacity: 0;
+	}
 
-    .mode-toggle:hover .hover {
-      opacity: 1;
-    }
+	.mode-toggle:hover .hover {
+		opacity: 1;
+	}
 
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
+	canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+	}
 
-    footer {
-      margin-top: 2em;
-      font-size: 12px;
-    }
+	footer {
+		margin-top: 2em;
+		font-size: 12px;
+	}
 </style>
 
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=47rbYXp8Mq">
@@ -134,85 +134,83 @@
 
 	</script>
 
-		<h1>vuk savić's personal website</h1>
-		<p><a href="https://github.com/vuksavic/" target="_blank">programming</a> | <a
-				href="https://linkedin.com/in/savicvuk" target="_blank">linkedin</a> | <a
-				href="https://balkan.fedive.rs/@vuk" target="_blank">fediverse</a></p>
-		<p><a href="https://instagram.com/vucejebote/" target="_blank">instagram</a> | <a
-				href="https://open.spotify.com/user/ham2ackis5u93u5gzuqq8cj3q?si=Q_pETEmISDSN4mo90h5fTg/"
-				target="_blank">spotify</a> | <a href="https://letterboxd.com/vuksavic/" target="_blank">letterboxd</a>
-		</p>
-		<p>
-		<div class="mode-toggle" onclick="toggleMode()">
-			<span class="default">[ ]</span>
-			<span class="hover">[ dark mode ]</span>
-		</div>
-		</p>
-		<p>contact:</p>
-		<p><em><a href="mailto:vuk@posteo.net">vuk at posteo dot net</a></em></p>
-		<p><em>44°48'58.3"N 20°27'21.1"E</em></p>
+	<h1>vuk savić's personal website</h1>
+	<p><a href="https://github.com/vuksavic/" target="_blank">programming</a> | <a
+			href="https://linkedin.com/in/savicvuk" target="_blank">linkedin</a> | <a
+			href="https://balkan.fedive.rs/@vuk" target="_blank">fediverse</a></p>
+	<p><a href="https://instagram.com/vucejebote/" target="_blank">instagram</a> | <a
+			href="https://open.spotify.com/user/ham2ackis5u93u5gzuqq8cj3q?si=Q_pETEmISDSN4mo90h5fTg/"
+			target="_blank">spotify</a> | <a href="https://letterboxd.com/vuksavic/" target="_blank">letterboxd</a>
+	</p>
+	
+	<p><div class="mode-toggle" onclick="toggleMode()">
+		<span class="default">[ ]</span>
+		<span class="hover">[ dark mode ]</span>
+	</div></p>
+	<p>contact:</p>
+	<p><em><a href="mailto:vuk@posteo.net">vuk at posteo dot net</a></em></p>
+	<p><em>44°48'58.3"N 20°27'21.1"E</em></p>
 
 	<script>
+		let material;
+		let matColor = 0xffffff;
+
 		function toggleMode() {
 			const body = document.body;
 			const hoverText = document.querySelector('.mode-toggle .hover');
 
 			if (body.classList.contains('bright')) {
 				body.classList.replace('bright', 'dark');
-				matColor = 0x555555;
+				matColor = 0x777777;
 				hoverText.textContent = '[ bright mode ]';
 			} else {
 				body.classList.replace('dark', 'bright');
 				matColor = 0xffffff;
 				hoverText.textContent = '[ dark mode ]';
 			}
+
+			if (material) {
+				material.color.setHex(matColor);
+			}
 		}
 	</script>
 
-</body>
+	<script async type="module">
+		import * as THREE from 'three';
 
-<script async type="module">
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-	import * as THREE from 'three';
-
-	const scene = new THREE.Scene();
-	const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-	const renderer = new THREE.WebGLRenderer({ alpha: true });
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.setAnimationLoop(animate);
-	document.body.appendChild(renderer.domElement);
-
-	let matColor = 0xffffff;
-	const geometry = new THREE.BoxGeometry(1, 1, 1);
-	let material = new THREE.MeshPhongMaterial({ color: matColor });
-	const light = new THREE.DirectionalLight(0xffffff, 1);
-	const cube = new THREE.Mesh(geometry, material);
-
-	light.position.set(-1, 2, 8);
-	scene.add(cube);
-	scene.add(light);
-
-	camera.position.z = 5;
-
-	window.onresize = function () {
-
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
+		const renderer = new THREE.WebGLRenderer({ alpha: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setAnimationLoop(animate);
+		document.body.appendChild(renderer.domElement);
 
-	}
+		// Initialize material and geometry
+		material = new THREE.MeshPhongMaterial({ color: matColor });
+		const geometry = new THREE.BoxGeometry(1, 1, 1);
+		const cube = new THREE.Mesh(geometry, material);
 
-	function animate() {
+		const light = new THREE.DirectionalLight(0xffffff, 1);
+		light.position.set(-1, 2, 8);
 
-		cube.rotation.x += 0.002;
-		cube.rotation.y += 0.002;
+		scene.add(cube);
+		scene.add(light);
 
-		renderer.render(scene, camera);
+		camera.position.z = 5;
 
-	}
+		window.onresize = function () {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		};
 
-</script>
+		function animate() {
+			cube.rotation.x += 0.002;
+			cube.rotation.y += 0.002;
+			renderer.render(scene, camera);
+		}
+	</script>
+</body>
 
 </html>
