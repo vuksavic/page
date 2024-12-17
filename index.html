@@ -2,96 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-	body {
-		font-family: monospace;
-		margin: 0;
-		color: #000;
-		background-color: #bbbbbb;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-		overflow: hidden;
-		transition: background-color 0.3s, color 0.3s;
-	}
-
-	body.dark {
-		color: #fff;
-		background-color: #222222;
-	}
-
-	a {
-		color: inherit;
-	}
-
-	h1 {
-		font-size: 16px;
-		font-style: italic;
-		font-weight: bold;
-		text-decoration: underline;
-		margin: 0.5em 0;
-	}
-
-	h2 {
-		font-size: 14px;
-		font-weight: regular;
-		margin: 0.5em 0;
-	}
-
-	p {
-		font-size: 14px;
-		margin: 0.5em 0;
-	}
-
-	.mode-toggle {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 140px;
-		height: 10px;
-		cursor: pointer;
-		user-select: none;
-		position: relative;
-		font-size: 14px;
-	}
-
-	.mode-toggle span {
-		position: absolute;
-		transition: opacity 0.3s;
-	}
-
-	.mode-toggle span.default {
-		opacity: 1;
-	}
-
-	.mode-toggle:hover .default {
-		opacity: 0;
-	}
-
-	.mode-toggle span.hover {
-		opacity: 0;
-	}
-
-	.mode-toggle:hover .hover {
-		opacity: 1;
-	}
-
-	canvas {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
-	}
-
-	footer {
-		margin-top: 2em;
-		font-size: 12px;
-	}
-</style>
+<link rel="stylesheet" href="styles.css">
 
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=47rbYXp8Mq">
 <link rel="icon" type="image/png" href="assets/favicon-32x32.png?v=47rbYXp8Mq" sizes="32x32">
@@ -116,25 +27,21 @@
 		}
 	</script>
 
-	<script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js">
+	<script async>
+		let options = {
+			timeZone: 'Europe/Belgrade',
+			timeStyle: 'long',
+			hour12: false,
+		},
+		formatter = new Intl.DateTimeFormat([], options);
 
-		const container = document.querySelector('.fireworks')
-		const fireworks = new Fireworks.default(container)
-		const today = new Date();
-
-		function checkBday() {
-
-			if ((today.getMonth() + 1) === 3 && today.getDate() === 29) {
-				fireworks.start();
-			}
-		};
-
-		checkBday();
-		fireworks.start();
-
+		setInterval(() => {
+			document.querySelector("#time").innerText = formatter.format(new Date());
+		}, 1000);
 	</script>
 
 	<h1>vuk savić's personal website</h1>
+	<p><a href="/cv.pdf" target="_blank">cv</a></p>
 	<p><a href="https://github.com/vuksavic/" target="_blank">programming</a> | <a
 			href="https://linkedin.com/in/savicvuk" target="_blank">linkedin</a> | <a
 			href="https://balkan.fedive.rs/@vuk" target="_blank">fediverse</a></p>
@@ -147,9 +54,8 @@
 		<span class="default">[ ]</span>
 		<span class="hover">[ dark mode ]</span>
 	</div></p>
-	<p>contact:</p>
 	<p><em><a href="mailto:vuk@posteo.net">vuk at posteo dot net</a></em></p>
-	<p><em>44°48'58.3"N 20°27'21.1"E</em></p>
+	<p><em><a style="text-decoration: none;" href="https://en.wikipedia.org/wiki/Belgrade" target="_blank">belgrade</a>,<a style="text-decoration: none;" href="https://en.wikipedia.org/wiki/Serbia" target="_blank">serbia</a>-</em><a style="text-decoration: none;" href="https://24timezones.com/Belgrade/time" target="_blank"><span id="time">00:00:00</span></a></p>
 
 	<script>
 		let material;
@@ -180,13 +86,12 @@
 
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
-
 		const renderer = new THREE.WebGLRenderer({ alpha: true });
+
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setAnimationLoop(animate);
 		document.body.appendChild(renderer.domElement);
 
-		// Initialize material and geometry
 		material = new THREE.MeshPhongMaterial({ color: matColor });
 		const geometry = new THREE.BoxGeometry(1, 1, 1);
 		const cube = new THREE.Mesh(geometry, material);
