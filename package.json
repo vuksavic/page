@@ -1,0 +1,23 @@
+{
+  "name": "page",
+  "version": "1.0.0",
+  "description": "a website i built for myself maybe around 8-9 years ago that should use some serious ~~rewriting~~/redesigning",
+  "homepage": "https://github.com/vuksavic/page#readme",
+  "bugs": {
+    "url": "https://github.com/vuksavic/page/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuksavic/page.git"
+  },
+  "license": "ISC",
+  "author": "Vuk Savić",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "vite": "^6.0.7"
+  }
+}
