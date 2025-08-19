@@ -1,2 +1,4 @@
 /.prettierrc
 /test.html
+/node_modules
+cv.pdf
