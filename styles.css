@@ -106,3 +106,10 @@ footer {
     margin-top: 2em;
     font-size: 12px;
 }
+
+#toys {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
