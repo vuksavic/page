@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Hockey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        #gameCanvas {
+            background-color: #0d47a1;
+            display: block;
+            touch-action: none; /* disable touch scrolling */
+            border: 8px solid #e0e0e0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center h-screen m-0 p-4">
+    <div class="w-full max-w-4xl mb-4 text-center">
+        <h1 class="text-4xl font-bold text-cyan-400 tracking-wider">AIR HOCKEY</h1>
+        <div class="flex justify-around items-center mt-2 text-2xl font-semibold">
+            <div class="p-2 rounded-lg">
+                <span class="text-red-500">YOU:</span>
+                <span id="player1Score" class="ml-2 text-white">0</span>
+            </div>
+            <div class="p-2 rounded-lg">
+                <span class="text-blue-400">CPU:</span>
+                <span id="player2Score" class="ml-2 text-white">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container" class="w-full max-w-4xl aspect-[2/1] rounded-lg overflow-hidden">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <div class="mt-4">
+        <button id="resetButton" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-bold py-2 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+            Reset Game
+        </button>
+    </div>
+    
+    <div id="winnerModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl text-center">
+            <h2 id="winnerText" class="text-4xl font-bold mb-4"></h2>
+            <button id="playAgainButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg">
+                Play Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const container = document.getElementById('canvas-container');
+
+            const player1ScoreElem = document.getElementById('player1Score');
+            const player2ScoreElem = document.getElementById('player2Score');
+            const resetButton = document.getElementById('resetButton');
+            const winnerModal = document.getElementById('winnerModal');
+            const winnerText = document.getElementById('winnerText');
+            const playAgainButton = document.getElementById('playAgainButton');
+
+            const PADDLE_RADIUS = 25;
+            const PUCK_RADIUS = 15;
+            const FRICTION = 0.995;
+            const WINNING_SCORE = 10; 
+            const CPU_SPEED = 5; // max cpu paddle speed
+
+            let player1Score = 0;
+            let player2Score = 0;
+            let gameRunning = true;
+
+            let puck = {
+                x: 0, y: 0,
+                dx: 0, dy: 0,
+                radius: PUCK_RADIUS,
+                color: '#ffffff'
+            };
+
+            let player1 = {
+                x: 0, y: 0,
+                radius: PADDLE_RADIUS,
+                color: '#ef4444'
+            };
+
+            let player2 = {
+                x: 0, y: 0,
+                radius: PADDLE_RADIUS,
+                color: '#3b82f6'
+            };
+
+            function resizeCanvas() {
+                const { width, height } = container.getBoundingClientRect();
+                canvas.width = width;
+                canvas.height = height;
+                // adjust radii based on canvas size for responsiveness
+                player1.radius = canvas.width * 0.04;
+                player2.radius = canvas.width * 0.04;
+                puck.radius = canvas.width * 0.025;
+            }
+
+            function init() {
+                window.addEventListener('resize', resizeCanvas);
+                resetButton.addEventListener('click', resetGame);
+                playAgainButton.addEventListener('click', () => {
+                    winnerModal.classList.add('hidden');
+                    resetGame(true);
+                });
+                
+                canvas.addEventListener('mousemove', movePlayerPaddle);
+                canvas.addEventListener('touchmove', movePlayerPaddle, { passive: false });
+
+                resizeCanvas();
+                gameLoop();
+            }
+            
+            function resetPositions() {
+                puck.x = canvas.width / 2;
+                puck.y = canvas.height / 2;
+                puck.dx = (Math.random() > 0.5 ? 1 : -1) * 5;
+                puck.dy = (Math.random() > 0.5 ? 1 : -1) * 5;
+
+                player1.x = canvas.width / 4;
+                player1.y = canvas.height / 2;
+
+                player2.x = (canvas.width / 4) * 3;
+                player2.y = canvas.height / 2;
+                gameRunning = true;
+            }
+
+            function resetGame(fullReset = true) {
+                if (fullReset) {
+                    player1Score = 0;
+                    player2Score = 0;
+                }
+                updateScore();
+                resetPositions();
+            }
+
+            function drawTable() {
+                ctx.fillStyle = '#0d47a1';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, 0);
+                ctx.lineTo(canvas.width / 2, canvas.height);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width * 0.1, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                const goalWidth = canvas.height * 0.3;
+                const goalDepth = 10;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 4;
+
+                ctx.strokeRect(-2, (canvas.height - goalWidth) / 2, goalDepth, goalWidth);
+                ctx.strokeRect(canvas.width - goalDepth + 2, (canvas.height - goalWidth) / 2, goalDepth, goalWidth);
+            }
+
+            function drawCircle(x, y, radius, color) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            function update() {
+                if (!gameRunning) return;
+
+                movePuck();
+                moveComputerPaddle();
+                handleCollisions();
+                checkGoal();
+            }
+
+            function movePuck() {
+                puck.x += puck.dx;
+                puck.y += puck.dy;
+
+                puck.dx *= FRICTION;
+                puck.dy *= FRICTION;
+            }
+
+            function movePlayerPaddle(e) {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                let mouseX, mouseY;
+                
+                if (e.type === 'touchmove') {
+                    mouseX = e.touches[0].clientX - rect.left;
+                    mouseY = e.touches[0].clientY - rect.top;
+                } else {
+                    mouseX = e.clientX - rect.left;
+                    mouseY = e.clientY - rect.top;
+                }
+
+                player1.x = Math.max(player1.radius, Math.min(mouseX, canvas.width / 2 - player1.radius));
+                player1.y = Math.max(player1.radius, Math.min(mouseY, canvas.height - player1.radius));
+            }
+
+            function moveComputerPaddle() {
+                // Simple AI: Tries to align with the puck's y-position and stay on its side
+                const targetY = puck.y;
+                const dy = targetY - player2.y;
+
+                // Move towards targetY, but not faster than CPU_SPEED
+                player2.y += Math.sign(dy) * Math.min(Math.abs(dy), CPU_SPEED);
+
+                // Basic defensive x-positioning
+                if (puck.x > canvas.width / 2 && puck.dx > 0) {
+                     // Move towards puck if it's coming
+                    const targetX = puck.x;
+                    const dx = targetX - player2.x;
+                    player2.x += Math.sign(dx) * Math.min(Math.abs(dx), CPU_SPEED / 2);
+                } else {
+                    // Return to default position
+                    const targetX = (canvas.width / 4) * 3;
+                    const dx = targetX - player2.x;
+                    player2.x += Math.sign(dx) * Math.min(Math.abs(dx), CPU_SPEED / 2);
+                }
+
+                // keep cpu paddle on its side
+                player2.x = Math.max(canvas.width / 2 + player2.radius, Math.min(player2.x, canvas.width - player2.radius));
+                player2.y = Math.max(player2.radius, Math.min(player2.y, canvas.height - player2.radius));
+            }
+
+            function handleCollisions() {
+                if (puck.y - puck.radius < 0 || puck.y + puck.radius > canvas.height) {
+                    puck.dy *= -1;
+                    puck.y = Math.max(puck.radius, Math.min(puck.y, canvas.height - puck.radius));
+                }
+
+                handlePaddleCollision(player1);
+                handlePaddleCollision(player2);
+            }
+            
+            function handlePaddleCollision(paddle) {
+                const dx = puck.x - paddle.x;
+                const dy = puck.y - paddle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const minDistance = puck.radius + paddle.radius;
+
+                if (distance < minDistance) {
+                    const angle = Math.atan2(dy, dx);
+                    const speed = Math.sqrt(puck.dx * puck.dx + puck.dy * puck.dy);
+                    
+                    const hitSpeed = speed + 2; 
+
+                    puck.dx = Math.cos(angle) * hitSpeed;
+                    puck.dy = Math.sin(angle) * hitSpeed;
+
+                    const overlap = minDistance - distance;
+                    puck.x += Math.cos(angle) * overlap;
+                    puck.y += Math.sin(angle) * overlap;
+                }
+            }
+
+            function checkGoal() {
+                const goalWidth = canvas.height * 0.3;
+                const goalTop = (canvas.height - goalWidth) / 2;
+                const goalBottom = goalTop + goalWidth;
+
+                if (puck.x - puck.radius < 0) {
+                    if (puck.y > goalTop && puck.y < goalBottom) {
+                        player2Score++;
+                        updateScore();
+                        resetPositions();
+                    } else {
+                        puck.dx *= -1;
+                        puck.x = puck.radius;
+                    }
+                }
+
+                if (puck.x + puck.radius > canvas.width) {
+                    if (puck.y > goalTop && puck.y < goalBottom) {
+                        player1Score++;
+                        updateScore();
+                        resetPositions();
+                    } else {
+                        puck.dx *= -1;
+                        puck.x = canvas.width - puck.radius;
+                    }
+                }
+            }
+
+            function updateScore() {
+                player1ScoreElem.textContent = player1Score;
+                player2ScoreElem.textContent = player2Score;
+                checkWinner();
+            }
+
+            function checkWinner() {
+                if (player1Score >= WINNING_SCORE) {
+                    winnerText.textContent = 'Player 1 Wins!';
+                    winnerModal.classList.remove('hidden');
+                    gameRunning = false;
+                } else if (player2Score >= WINNING_SCORE) {
+                    winnerText.textContent = 'CPU Wins!';
+                    winnerModal.classList.remove('hidden');
+                    gameRunning = false;
+                }
+            }
+
+            function gameLoop() {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawTable();
+                drawCircle(puck.x, puck.y, puck.radius, puck.color);
+                drawCircle(player1.x, player1.y, player1.radius, player1.color);
+                drawCircle(player2.x, player2.y, player2.radius, player2.color);
+            }
+
+            init();
+        });
+    </script>
+
+</body>
+</html>
