@@ -7,8 +7,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -108,8 +109,57 @@ footer {
 }
 
 #toys {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-auto-rows: 20px;
+    grid-auto-flow: dense;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.toy-item {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toy-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.toy-small {
+    grid-row: span 11;
+    min-height: 200px;
+}
+
+.toy-medium {
+    grid-row: span 19;
+    min-height: 350px;
+}
+
+.toy-large {
+    grid-row: span 22;
+    min-height: 400px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #toys {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    #toys {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 }
