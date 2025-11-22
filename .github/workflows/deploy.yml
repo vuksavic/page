@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     
     steps:
       - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
           pass: ${{ secrets.FTP_PASSWORD }}
           onlyNewer: true
           localDir: '.'
-          remoteDir: '/public_html'  # Change this
+          remoteDir: '/public_html'
           reverse: true  # Upload from local to remote
-          ignoreFile: '.sftpignore'
+          ignoreFile: './.sftpignore'
           options: '--verbose'
