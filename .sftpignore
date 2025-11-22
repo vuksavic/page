@@ -1,11 +1,11 @@
 .prettierrc
 test.html
-**/node_modules/**
+node_modules
 publish
 package-lock.json
 package.json
 README.md
 .gitignore
 .sftpignore
-.github/**
-.git/**
+.github
+.git

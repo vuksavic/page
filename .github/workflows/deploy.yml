@@ -26,4 +26,4 @@ jobs:
           remoteDir: '/public_html'
           reverse: true  # Upload from local to remote
           ignoreFile: '.sftpignore'
-          options: '--verbose'
+          options: '--verbose --exclude-glob node_modules/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .prettierrc --exclude-glob test.html --exclude-glob publish --exclude-glob package-lock.json --exclude-glob package.json --exclude-glob README.md --exclude-glob .gitignore --exclude-glob .sftpignore'
