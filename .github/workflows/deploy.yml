@@ -1,40 +1,27 @@
-name: Deploy to Hetzner
+name: Deploy to Hetzner via SFTP
 
 on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   deploy:
-    name: Deploy via FTP
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Deploy to Hetzner via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+      
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
-          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
+          server: ${{ secrets.FTP_SERVER }}
           port: 22
-          timeout: 300000
-          log-level: verbose
-          server-dir: /public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/package*.json
-            **/.prettierrc
-            **/test.html
-            **/publish/**
-            **/.DS_Store
-            **/README.md
-            **/.github/**
-        continue-on-error: true
+          password: ${{ secrets.FTP_PASSWORD }}
+          local_path: './*'
+          remote_path: '/public_html'
+          sftpArgs: '-o ConnectTimeout=30'
+          delete_remote_files: false
