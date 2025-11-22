@@ -3,3 +3,6 @@
 /node_modules
 /toybox/*/node_modules
 publish
+package-lock.json
+package.json
+README.md

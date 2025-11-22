@@ -25,4 +25,5 @@ jobs:
           localDir: '.'
           remoteDir: '/public_html'  # Change this
           reverse: true  # Upload from local to remote
+          ignoreFile: '.sftpignore'
           options: '--verbose'
