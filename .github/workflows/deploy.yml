@@ -21,12 +21,11 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
+          protocol: sftp
+          port: 22
           timeout: 300000
-          concurrency: 1
           log-level: verbose
-          server-dir: /public_html/ 
+          server-dir: /public_html/
           exclude: |
             **/.git*
             **/.git*/**
