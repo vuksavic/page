@@ -6,3 +6,5 @@ publish
 package-lock.json
 package.json
 README.md
+.gitignore
+.sftpignore
