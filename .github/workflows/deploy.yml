@@ -16,14 +16,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to Hetzner via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          server-dir: /public_html/
+          timeout: 300000
+          concurrency: 1
+          log-level: verbose
+          server-dir: /public_html/ 
           exclude: |
             **/.git*
             **/.git*/**
@@ -35,3 +38,4 @@ jobs:
             **/.DS_Store
             **/README.md
             **/.github/**
+        continue-on-error: true
