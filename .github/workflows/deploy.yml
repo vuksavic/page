@@ -1,4 +1,4 @@
-name: Deploy to Hetzner via SFTP
+name: Deploy to Hetzner via SFTP (Alternative)
 
 on:
   push:
@@ -15,13 +15,14 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        uses: pressidium/lftp-mirror-action@v1
         with:
-          username: ${{ secrets.FTP_USERNAME }}
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           port: 22
-          password: ${{ secrets.FTP_PASSWORD }}
-          local_path: './*'
-          remote_path: '/public_html'
-          sftpArgs: '-o ConnectTimeout=30'
-          delete_remote_files: false
+          user: ${{ secrets.FTP_USERNAME }}
+          pass: ${{ secrets.FTP_PASSWORD }}
+          onlyNewer: true
+          localDir: '.'
+          remoteDir: '/public_html'  # Change this
+          reverse: true  # Upload from local to remote
+          options: '--verbose'
