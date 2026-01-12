@@ -57,6 +57,25 @@
 	<p><a style="text-decoration: none;" href="https://en.wikipedia.org/wiki/Belgrade" target="_blank">belgrade</a>,<a style="text-decoration: none;" href="https://en.wikipedia.org/wiki/Serbia" target="_blank">serbia</a></p>
 	<p><a style="text-decoration: none;" href="https://24timezones.com/Belgrade/time" target="_blank"><span id="time">00:00:00</span></a></p>
 
+	<footer>
+		<p id="quote">Loading quote...</p>
+	</footer>
+
+	<script>
+		// Load and display random quote
+		fetch('quotes.json')
+			.then(response => response.json())
+			.then(data => {
+				const quotes = data.quotes;
+				const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+				document.getElementById('quote').textContent = randomQuote;
+			})
+			.catch(error => {
+				console.error('Error loading quotes:', error);
+				document.getElementById('quote').textContent = '';
+			});
+	</script>
+
 	<script>
 		let material;
 		let matColor = 0xffffff;
